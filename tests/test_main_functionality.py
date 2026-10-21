@@ -15,15 +15,15 @@ class TestMainFunctionality:
     def test_click_constructor(self, driver):
         page = ConstructorPage(driver)
         page.open()
-        page.click_order_tape()
-        page.click_constructor()
+        page.header.click_order_tape()
+        page.header.click_constructor()
         assert page.get_current_url().rstrip("/") == Urls.BASE_URL
 
     @allure.title("Переход по клику на «Лента заказов»")
     def test_click_order_tape(self, driver):
         page = ConstructorPage(driver)
         page.open()
-        page.click_order_tape()
+        page.header.click_order_tape()
         assert Texts.URL_PART_FEED in page.get_current_url()
 
     @allure.title("Клик по ингредиенту открывает всплывающее окно с деталями")
@@ -84,7 +84,7 @@ class TestMainFunctionality:
         order_number = cart.wait_real_order_number()
         cart.close()
 
-        page.click_personal_account()
+        page.header.click_personal_account()
         account = PersonalAccountPage(driver)
         account.click_orders_history()
         assert order_number in account.get_page_source()

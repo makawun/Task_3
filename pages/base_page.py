@@ -12,8 +12,9 @@ from data.texts import Timeouts
 
 class BasePage:
     def __init__(self, driver):
-        self.__driver = driver
-        self.wait = WebDriverWait(driver, Timeouts.DEFAULT)
+            self.__driver = driver
+            self.wait = WebDriverWait(driver, Timeouts.DEFAULT)
+            self.header = HeaderComponent(self)
 
     @allure.step("Открыть страницу: {path}")
     def open(self, path: str = Urls.MAIN):
@@ -114,18 +115,22 @@ class BasePage:
             time.sleep(Timeouts.POLL_INTERVAL)
         return False
 
+class HeaderComponent:
+    def __init__(self, page):
+        self._page = page
+
     @allure.step("Клик по «Личный кабинет»")
     def click_personal_account(self):
-        self.click(BasePageLocators.PERSONAL_ACCOUNT)
-        self.wait_url_contains(Urls.ACCOUNT_PROFILE)
+        self._page.click(BasePageLocators.PERSONAL_ACCOUNT)
+        self._page.wait_url_contains(Urls.ACCOUNT_PROFILE)
 
     @allure.step("Клик по «Лента заказов»")
     def click_order_tape(self):
-        self.click(BasePageLocators.ORDER_TAPE)
-        self.wait_url_contains(Urls.FEED)
+        self._page.click(BasePageLocators.ORDER_TAPE)
+        self._page.wait_url_contains(Urls.FEED)
 
     @allure.step("Клик по «Конструктор»")
     def click_constructor(self):
-        self.click(BasePageLocators.CONSTRUCTOR)
-        self.wait_url_equals(Urls.BASE_URL)
+        self._page.click(BasePageLocators.CONSTRUCTOR)
+        self._page.wait_url_equals(Urls.BASE_URL)
         
